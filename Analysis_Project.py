@@ -11,6 +11,18 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 df = pd.read_csv('/Users/elifyanar/Desktop/VBK-Task1/Medicine_Details.csv')
 
 # --- 1 & 2. VERİ TANIMA (EDA) ÇIKTILARI ---
+# VERİ SETİ TANITIMI (başlangıca ekle)
+print("=" * 50)
+print("1. VERİ SETİ TANITIMI")
+print("=" * 50)
+print("Veri Seti: Medicine_Details.csv")
+print("Açıklama: İlaç detayları, incelemeleri ve kullanım bilgilerini içeren veri seti")
+print("Değişken Sayısı:", len(df.columns))
+print("Gözlem Sayısı:", len(df))
+print("\nDeğişkenler ve Tipleri:")
+for col in df.columns:
+    print(f"- {col}: {df[col].dtype}")
+
 print("=" * 50)
 print("1 & 2. VERİ TANIMA VE TEMEL EDA ÇIKTILARI")
 print("=" * 50)
@@ -22,6 +34,16 @@ print(df.isnull().sum())
 
 print("\n Özet İstatistikler (Sayısal):")
 print(df.describe())
+
+print("\nAykırı Değer Analizi (Excellent Review %):")
+Q1 = df['Excellent Review %'].quantile(0.25)
+Q3 = df['Excellent Review %'].quantile(0.75)
+IQR = Q3 - Q1
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+outliers = df[(df['Excellent Review %'] < lower_bound) | (df['Excellent Review %'] > upper_bound)]
+print(f"Aykırı değer sayısı: {len(outliers)}")
+print(f"Aykırı değer oranı: {len(outliers)/len(df)*100:.2f}%")
 
 # --- GÖRSELLEŞTİRME VE MODEL İÇİN ÖN HAZIRLIK ---
 # Özellik Mühendisliği (Model ve Görsel için)
